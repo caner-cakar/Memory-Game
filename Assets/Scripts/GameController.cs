@@ -10,9 +10,10 @@ public class GameController : MonoBehaviour
 
     public Sprite[] puzzles;
     public List<Sprite> gamePuzzles = new List<Sprite>();
-    int lastValue;
 
     private bool firstGuess,secondGuess;
+    private int firstGuessIndex, secondGuessIndex,gameGuess,correctGuess;
+    private string firstGuessPuzzle,secondGuessPuzzle;
 
     private void Awake() 
     {
@@ -23,6 +24,8 @@ public class GameController : MonoBehaviour
     {
         GetButton();
         AddGamePuzzle();
+        AddListeners();
+        gameGuess = gamePuzzles.Count /2 ;  
     }
 
     void GetButton()
@@ -73,5 +76,53 @@ public class GameController : MonoBehaviour
     private void PickaPuzzle()
     {
 
+        if(!firstGuess)
+        {
+            firstGuess = true;
+            firstGuessIndex = int.Parse(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.name);
+
+            firstGuessPuzzle = gamePuzzles[firstGuessIndex].name;
+            btns[firstGuessIndex].image.sprite = gamePuzzles[firstGuessIndex];
+        }
+        else if(!secondGuess)
+        {
+            secondGuess = true;
+            secondGuessIndex = int.Parse(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.name);
+
+            secondGuessPuzzle = gamePuzzles[secondGuessIndex].name;
+
+            btns[secondGuessIndex].image.sprite = gamePuzzles[secondGuessIndex];
+
+            StartCoroutine(ThePuzzlesMatch());
+        }
+    }
+    IEnumerator ThePuzzlesMatch()
+    {
+        yield return new WaitForSeconds(1f);
+        if(firstGuessPuzzle == secondGuessPuzzle)
+        {
+            yield return new WaitForSeconds(1f);
+            btns[firstGuessIndex].interactable = false;
+            btns[secondGuessIndex].interactable = false;
+            btns[firstGuessIndex].image.color = new Color(0,0,0,0);
+            btns[secondGuessIndex].image.color = new Color(0,0,0,0);
+            correctGuess++;
+            isGameFinished();
+        }
+        else 
+        {
+            btns[firstGuessIndex].image.sprite = bgImage;
+            btns[secondGuessIndex].image.sprite = bgImage;
+        }
+        yield return new WaitForSeconds(1f);
+        firstGuess = false;
+        secondGuess = false;
+    }
+    void isGameFinished()
+    {
+        if(correctGuess == gameGuess)
+        {
+
+        }
     }
 }
