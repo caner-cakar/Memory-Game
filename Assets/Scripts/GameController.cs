@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -118,11 +119,11 @@ public class GameController : MonoBehaviour
         firstGuess = false;
         secondGuess = false;
     }
-    void isGameFinished()
+    public void isGameFinished()
     {
         if(correctGuess == gameGuess)
         {
-
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
         }
     }
 }
