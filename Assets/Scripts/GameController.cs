@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
     public List<Button> btns = new List<Button>();
+    [SerializeField] private Sprite bgImage;
     
     void Start()
     {
@@ -19,6 +20,7 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < objects.Length; i++)
         {
             btns.Add(objects[i].GetComponent<Button>());
+            btns[i].image.sprite = bgImage;
         }   
     }
 
